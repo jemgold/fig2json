@@ -9,6 +9,7 @@ import SyntaxHighlighter, {
 } from 'react-syntax-highlighter/light';
 import json from 'react-syntax-highlighter/languages/hljs/json';
 import atomOneDark from 'react-syntax-highlighter/styles/hljs/atom-one-dark';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 registerLanguage('json', json);
 
@@ -16,6 +17,7 @@ import {
   Flex,
   Container,
   Box,
+  Button,
   Input,
   Label,
   NavLink,
@@ -119,16 +121,24 @@ export default class Index extends React.Component<{}, State> {
             onChange={this.onInput}
           />
         </Box>
-        {this.state.loading && <Text>Loading</Text>}
+
+        {this.state.loading && <Text color="mono.0">Loading…</Text>}
         {this.state.data && (
-          <SyntaxHighlighter
-            language="json"
-            style={atomOneDark}
-            PreTag={Pre}
-            CodeTag={Code}
-          >
-            {JSON.stringify(this.state.data, null, 2)}
-          </SyntaxHighlighter>
+          <Box>
+            <CopyToClipboard text={JSON.stringify(this.state.data, null, 2)}>
+              <Button bg="mono.0" color="base">
+                Copy to clipboard
+              </Button>
+            </CopyToClipboard>
+            <SyntaxHighlighter
+              language="json"
+              style={atomOneDark}
+              PreTag={Pre}
+              CodeTag={Code}
+            >
+              {JSON.stringify(this.state.data, null, 2)}
+            </SyntaxHighlighter>
+          </Box>
         )}
       </Box>
     );
